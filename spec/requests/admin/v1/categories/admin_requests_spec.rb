@@ -161,7 +161,6 @@ RSpec.describe "Admin::V1::Categories as :admin", type: :request do
       expected_product_categories = ProductCategory.where(id: product_categories.map(&:id))
 
       expect(expected_product_categories).to eq []
-
     end
   end
 end

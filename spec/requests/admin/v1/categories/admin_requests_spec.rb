@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Admin::V1::Categories as :admin", type: :request do
   let(:user) { create(:user) }
 
-  context "GET /categories" do
+  context 'GET /categories' do
     let(:url) { "/admin/v1/categories" }
     let!(:categories) { create_list(:category, 10) }
 
@@ -85,6 +85,22 @@ RSpec.describe "Admin::V1::Categories as :admin", type: :request do
         get url, headers: auth_header(user), params: order_params
         expect(response).to have_http_status(:ok)
       end
+    end
+  end
+
+  context 'GET /categories/:id' do
+    let(:category) { create(:category) }
+    let(:url) { "/admin/v1/categories/#{category.id}" }
+
+    it 'returns requested category' do
+      get url, headers: auth_header(user)
+      expect_category = category.as_json(only: %i(id name))
+
+      expect(body_json['category']). to eq expect_category
+    end
+    it "returns success status" do
+      get url, headers: auth_header(user)
+      expect(response).to have_http_status(:ok)
     end
   end
 
